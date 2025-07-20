@@ -4,6 +4,7 @@ import { Server } from 'http'
 import mongoose from 'mongoose'
 import app from './app'
 import { envVar } from './app/config/env'
+import { seedSuperAdmin } from './app/utils/seedSuperAdmin'
 
 let server: Server
 
@@ -22,7 +23,10 @@ const StartServer = async () => {
     }
 }
 
-StartServer()
+(async() =>{
+   await StartServer()
+  await  seedSuperAdmin()
+})()
 
 process.on("SIGTERM", (err) => {
     console.log("sigterm  detected, shutting down the server...." ,err)

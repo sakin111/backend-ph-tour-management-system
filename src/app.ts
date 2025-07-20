@@ -1,8 +1,20 @@
 import express from 'express'
 import { Request, Response } from "express"
-
+import cors from "cors"
+import { router } from './app/routes'
+import { globalErrorHandler } from './app/middleware/globalErrorHandler'
+import notFound from './app/middleware/notFound'
+import cookieParser from 'cookie-parser'
+import passport from 'passport'
+import "./app/config/passport"
 
 const app = express()
+app.use(passport.initialize())
+app.use(passport.initialize())
+app.use(cookieParser())
+app.use(express.json())
+app.use(cors())
+app.use("/api/v1", router)
 
 
 app.get("/" , ( req:Request, res: Response ) =>{
@@ -10,5 +22,9 @@ app.get("/" , ( req:Request, res: Response ) =>{
         message: "Welcome to the PH Tour Management backend"
     })
 })
+
+
+app.use(globalErrorHandler)
+app.use(notFound)
 
 export default app;
